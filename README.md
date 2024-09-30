@@ -1,1 +1,3 @@
-# Terraform Repo
+terraform
+
+check terraform.lan host
