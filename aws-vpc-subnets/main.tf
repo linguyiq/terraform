@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_vpc" "dev-vpc" {
   cidr_block = var.vpc_cidr_block
   tags =  {
-    Name = "Development"
+    Name = "Development_01"
   }
 }
 
