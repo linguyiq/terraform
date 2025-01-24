@@ -122,12 +122,18 @@ resource "aws_instance" "dev-server" {
   availability_zone = var.az_subnet_1
   associate_public_ip_address = true
   key_name = "aws_server"
+
+  user_data = file("nginx-script.sh")
   tags = {
     Name = "${var.env_prefix}-server"
   }
 }
 
 # output
+
+output "ec2-public-ip" {
+  value = aws_instance.dev-server.public_ip
+}
 
 # output "${var.env_prefix}-vpc-id" {
 #   value = aws_vpc.dev-vpc.id
