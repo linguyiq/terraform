@@ -16,17 +16,6 @@ resource "aws_internet_gateway" "dev-igw" {
   }
 }
 
-# resource "aws_route_table" "dev-rtb" {
-#   vpc_id = aws_vpc.dev-vpc.id
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     gateway_id = aws_internet_gateway.dev-igw.id
-#   }
-#   tags =  {
-#     Name = "${var.env_prefix}-rtb"
-#   }
-# }
-
 resource "aws_default_route_table" "df-rtb" {
   default_route_table_id = aws_vpc.dev-vpc.default_route_table_id
   route {
@@ -61,10 +50,6 @@ resource "aws_subnet" "dev-subnet-1" {
     Name = "${var.env_prefix}-subnet-1"
   }
 } 
-
-# data "aws_vpc" "existing-vpc" {
-#   cidr_block = var.vpc_cidr_block
-# }
 
 resource "aws_subnet" "dev-subnet-2" {
   vpc_id = aws_vpc.dev-vpc.id
@@ -113,6 +98,37 @@ resource "aws_default_security_group" "df-sg" {
       Name = "${var.env_prefix}-df-sg"
   }
 }
+
+data "aws_ami" "latest-amazon-linux-2-ami" {
+  most_recent = true
+  owners = ["amazon"] 
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  } 
+}
+
+resource "aws_instance" "dev-server" {
+  ami = data.aws_ami.latest-amazon-linux-2-ami.id
+  instance_type = "t2.micro"
+  subnet_id = aws_subnet.dev-subnet-1.id
+  vpc_security_group_ids = [aws_default_security_group.df-sg.id]
+  availability_zone = var.az_subnet_1
+  associate_public_ip_address = true
+  key_name = "aws_server"
+  tags = {
+    Name = "${var.env_prefix}-server"
+  }
+}
+
+# output
+
 # output "${var.env_prefix}-vpc-id" {
 #   value = aws_vpc.dev-vpc.id
 # }
