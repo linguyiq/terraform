@@ -7,3 +7,6 @@ aws-vpc-subnets/*.tfstate.*
 
 # tf variables file
 aws-vpc-subnets/variables.tf
+
+# modules dir
+aws-vpc-subnets/modules
