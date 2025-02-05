@@ -1,9 +1,0 @@
-variable "vpc_id" {}
-variable "default_route_table_id" {}
-variable "subnet_1_cidr_block" {}
-variable "subnet_2_cidr_block" {}
-variable "subnet_3_cidr_block" {}
-variable "az_subnet_1" {}
-variable "az_subnet_2" {}
-variable "az_subnet_3" {}
-variable "env_prefix" {}
