@@ -1,12 +1,12 @@
 # local .terraform dir
-aws-vpc-subnets/.terraform/*
+**/.terraform/*
 
 # tf state files
-aws-vpc-subnets/*.tfstate
-aws-vpc-subnets/*.tfstate.*
+**/*.tfstate
+**/*.tfstate.*
 
 # tf variables file
-aws-vpc-subnets/variables.tf
+**/variables.tf
 
 # modules dir
-aws-vpc-subnets/modules
+**/modules
