@@ -3,9 +3,7 @@ resource "random_string" "my_random" {
     special = false
     upper   = false
     lower   = true
-    number  = true
     keepers = {
         always = timestamp()
     }
-  
 }
