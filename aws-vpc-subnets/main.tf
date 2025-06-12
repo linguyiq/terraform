@@ -4,14 +4,14 @@ provider "aws" {
 
 resource "aws_vpc" "dev-vpc" {
   cidr_block = var.vpc_cidr_block
-  tags =  {
+  tags = {
     Name = var.env_prefix
   }
 }
 
 resource "aws_internet_gateway" "dev-igw" {
   vpc_id = aws_vpc.dev-vpc.id
-  tags =  {
+  tags = {
     Name = "${var.env_prefix}-igw"
   }
 }
@@ -22,50 +22,50 @@ resource "aws_default_route_table" "df-rtb" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.dev-igw.id
   }
-  tags =  {
+  tags = {
     Name = "${var.env_prefix}-df-rtb"
   }
 }
 
 resource "aws_route_table_association" "dev-rtb-subnet-1" {
-  subnet_id = aws_subnet.dev-subnet-1.id
+  subnet_id      = aws_subnet.dev-subnet-1.id
   route_table_id = aws_default_route_table.df-rtb.id
 }
 
 resource "aws_route_table_association" "dev-rtb-subnet-2" {
-  subnet_id = aws_subnet.dev-subnet-2.id
+  subnet_id      = aws_subnet.dev-subnet-2.id
   route_table_id = aws_default_route_table.df-rtb.id
 }
 
 resource "aws_route_table_association" "dev-rtb-subnet-3" {
-  subnet_id = aws_subnet.dev-subnet-3.id
+  subnet_id      = aws_subnet.dev-subnet-3.id
   route_table_id = aws_default_route_table.df-rtb.id
 }
 
 resource "aws_subnet" "dev-subnet-1" {
-  vpc_id = aws_vpc.dev-vpc.id
-  cidr_block = var.subnet_1_cidr_block
+  vpc_id            = aws_vpc.dev-vpc.id
+  cidr_block        = var.subnet_1_cidr_block
   availability_zone = var.az_subnet_1
-  tags =  {
+  tags = {
     Name = "${var.env_prefix}-subnet-1"
   }
-} 
+}
 
 resource "aws_subnet" "dev-subnet-2" {
-  vpc_id = aws_vpc.dev-vpc.id
-  cidr_block = var.subnet_2_cidr_block
+  vpc_id            = aws_vpc.dev-vpc.id
+  cidr_block        = var.subnet_2_cidr_block
   availability_zone = var.az_subnet_2
-  tags =  {
+  tags = {
     Name = "${var.env_prefix}-subnet-2"
   }
 }
 
 resource "aws_subnet" "dev-subnet-3" {
-  vpc_id = aws_vpc.dev-vpc.id
-  cidr_block = var.subnet_3_cidr_block
+  vpc_id            = aws_vpc.dev-vpc.id
+  cidr_block        = var.subnet_3_cidr_block
   availability_zone = var.az_subnet_3
-  tags =  {
-      Name = "${var.env_prefix}-subnet-3"
+  tags = {
+    Name = "${var.env_prefix}-subnet-3"
   }
 }
 
@@ -73,35 +73,35 @@ resource "aws_default_security_group" "df-sg" {
   vpc_id = aws_vpc.dev-vpc.id
 
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = [var.my_ip]
   }
 
   ingress {
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
     prefix_list_ids = []
   }
 
-  tags =  {
-      Name = "${var.env_prefix}-df-sg"
+  tags = {
+    Name = "${var.env_prefix}-df-sg"
   }
 }
 
 data "aws_ami" "latest-amazon-linux-2-ami" {
   most_recent = true
-  owners = ["amazon"] 
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
@@ -111,17 +111,17 @@ data "aws_ami" "latest-amazon-linux-2-ami" {
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
-  } 
+  }
 }
 
 resource "aws_instance" "dev-server" {
-  ami = data.aws_ami.latest-amazon-linux-2-ami.id
-  instance_type = "t2.micro"
-  subnet_id = aws_subnet.dev-subnet-1.id
-  vpc_security_group_ids = [aws_default_security_group.df-sg.id]
-  availability_zone = var.az_subnet_1
+  ami                         = data.aws_ami.latest-amazon-linux-2-ami.id
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.dev-subnet-1.id
+  vpc_security_group_ids      = [aws_default_security_group.df-sg.id]
+  availability_zone           = var.az_subnet_1
   associate_public_ip_address = true
-  key_name = "aws_server"
+  key_name                    = "aws_server"
 
   user_data = file("nginx-script.sh")
   tags = {
