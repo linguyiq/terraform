@@ -9,3 +9,7 @@ output "ami_id" {
 output "random_string" {
   value = random_string.random.result
 }
+
+output "public_key" {
+  value = tls_private_key.genprivkey.public_key_openssh
+}
