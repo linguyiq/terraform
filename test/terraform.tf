@@ -1,4 +1,12 @@
 terraform {
+  /*backend "remote" {
+    hostname     = "app.terraform.io"
+    organization = "linguyiq"
+
+    workspaces {
+      name = "test"
+    }
+  }*/
   required_version = ">= 1.0.0"
   required_providers {
     aws = {
