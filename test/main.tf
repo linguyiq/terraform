@@ -30,3 +30,9 @@ resource "random_string" "random" {
   min_special = 3
   min_numeric = 3
 }
+
+locals {
+  maximum = max(var.num1, var.num2, var.num3)
+  minimum = min(var.num1, var.num2, var.num3, 20, 154)
+}
+

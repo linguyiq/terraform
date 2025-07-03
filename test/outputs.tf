@@ -14,3 +14,11 @@ output "public_key" {
   value = tls_private_key.genprivkey.public_key_openssh
   sensitive = true
 }
+
+output "max_num" {
+  value = local.maximum
+}
+
+output "min_num" {
+  value = local.minimum 
+}
