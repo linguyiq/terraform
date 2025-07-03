@@ -12,4 +12,5 @@ output "random_string" {
 
 output "public_key" {
   value = tls_private_key.genprivkey.public_key_openssh
+  sensitive = true
 }
