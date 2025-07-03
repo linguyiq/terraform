@@ -129,24 +129,3 @@ resource "aws_instance" "dev-server" {
   }
 }
 
-# output
-
-output "ec2-public-ip" {
-  value = aws_instance.dev-server.public_ip
-}
-
-# output "${var.env_prefix}-vpc-id" {
-#   value = aws_vpc.dev-vpc.id
-# }
-
-# output "${var.env_prefix}-subnet-1-id" {
-#   value = aws_subnet.dev-subnet-1.id
-# }
-
-# output "${var.env_prefix}-subnet-2-id" {
-#   value = aws_subnet.dev-subnet-2.id
-# }
-
-# output "${var.env_prefix}-subnet-3-id" {
-#   value = aws_subnet.dev-subnet-3.id
-# }
