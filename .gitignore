@@ -10,3 +10,9 @@
 
 # modules dir
 **/modules
+
+# private keys
+**/*.pem
+
+# vault dir
+**/vault
